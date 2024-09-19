@@ -11,17 +11,22 @@ import java.io.IOException;
 public class Player extends Entity{
     GamePanel gamePanel;
     KeyHandler keyHandler;
+    public final int screenX;
+    public final int screenY;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+        screenX = gamePanel.screenWidth/2-(gamePanel.tileSize/2);
+        screenY = gamePanel.screenHeight/2-(gamePanel.tileSize/2);
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        this.x = 100;
-        this.y = 100;
+       this.worldX = gamePanel.tileSize * 23;
+       this.worldY = gamePanel.tileSize * 21;
+
         this.speed = 4;
         this.direction = "down";
     }
@@ -33,20 +38,20 @@ public class Player extends Entity{
 
         if(!keyIsPressed) return;
         if(keyHandler.downPressed) {
-            this.y += this.speed;
+            this.worldY += this.speed;
             this.direction = "down";
         }
         if(keyHandler.rightPressed) {
-            this.x += this.speed;
+            this.worldX += this.speed;
             this.direction = "right";
         }
         if(keyHandler.leftPressed) {
-            this.x -= this.speed;
+            this.worldX -= this.speed;
             this.direction = "left";
         }
         if(keyHandler.upPressed) {
             this.direction = "up";
-            this.y -= this.speed;
+            this.worldY -= this.speed;
         }
 
         spriteCounter++;
@@ -106,6 +111,6 @@ public class Player extends Entity{
                 break;
         }
 
-        g2.drawImage(image, this.x, this.y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 }
