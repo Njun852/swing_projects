@@ -5,18 +5,22 @@ import tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class GamePanel extends JPanel implements Runnable{
 
     //screen settings
+    public int zoomFactor = 1;
     final int fps = 60;
     final int originalTileSize = 16; //16x16 tiles
     final int scale = 3;
-    public final int tileSize = originalTileSize * scale; //48x48
+    public int tileSize = originalTileSize * scale; //48x48
 
     //how many tiles fit in the screen. 4 : 3 ratio
-    public final int maxScreenCol = 16;
-    public final int maxScreenRow = 12;
+    public int maxScreenCol = 16;
+    public int maxScreenRow = 12;
     public final int screenWidth = tileSize * maxScreenCol; //786 pixels
     public final int screenHeight = tileSize * maxScreenRow; //576 pixels
 
@@ -28,8 +32,9 @@ public class GamePanel extends JPanel implements Runnable{
     //will run until you stop it
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
-    public Player player = new Player(this, keyHandler);
     TileManager tileManager = new TileManager(this);
+    public Player player = new Player(this, keyHandler);
+    public CollisionChecker collisionChecker = new CollisionChecker(this);
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -39,7 +44,6 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyHandler);
         this.setLayout(new FlowLayout());
-
         //allows the panel to be focused so it can receive key input
         this.setFocusable(true);
     };
@@ -79,6 +83,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update() {
         player.update();
+
+
     }
     //built-in method on the JPanel class
     //a class with functions to draw objects on screen

@@ -11,8 +11,8 @@ import java.io.InputStreamReader;
 
 public class TileManager {
     GamePanel gamePanel;
-    Tile[] tile;
-    int mapTileNum[][];
+    public final Tile[] tile;
+    public final int[][] mapTileNum;
 
 
     public TileManager(GamePanel gamePanel) {
@@ -28,9 +28,11 @@ public class TileManager {
         try{
             tile[0] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png")));
             tile[1] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png")));
+            tile[1].collision = true;
             tile[2] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/water.png")));
             tile[3] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/sand.png")));
             tile[4] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/tree.png")));
+            tile[4].collision = true;
             tile[5] = new Tile(ImageIO.read(getClass().getResourceAsStream("/tiles/earth.png")));
         } catch (IOException e) {
             e.printStackTrace();
@@ -53,7 +55,6 @@ public class TileManager {
         }
     }
     public void draw(Graphics2D g2d) {
-        int tilesDrawn = 0;
         for(int col = 0; col < gamePanel.maxWorldCol; col++) {
             for(int row = 0; row < gamePanel.maxWorldRow; row++) {
                 int worldX = col * gamePanel.tileSize;
@@ -63,10 +64,8 @@ public class TileManager {
                 int tileType = mapTileNum[col][row];
                 if(screenX < -gamePanel.tileSize || screenX > gamePanel.screenWidth+ gamePanel.tileSize) break;
                 if(screenY < -gamePanel.tileSize || screenY > gamePanel.screenHeight+gamePanel.tileSize ) continue;
-                tilesDrawn++;
                 g2d.drawImage(tile[tileType].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
             }
         }
-        System.out.println("Tiles drawn: "+tilesDrawn);
     }
 }

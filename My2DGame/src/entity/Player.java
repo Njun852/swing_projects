@@ -2,6 +2,7 @@ package entity;
 
 import main.GamePanel;
 import main.KeyHandler;
+import tile.TileManager;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -19,6 +20,7 @@ public class Player extends Entity{
         this.keyHandler = keyHandler;
         screenX = gamePanel.screenWidth/2-(gamePanel.tileSize/2);
         screenY = gamePanel.screenHeight/2-(gamePanel.tileSize/2);
+        solidArea = new Rectangle(8, 16, 32, 32);
         setDefaultValues();
         getPlayerImage();
     }
@@ -26,7 +28,6 @@ public class Player extends Entity{
     public void setDefaultValues() {
        this.worldX = gamePanel.tileSize * 23;
        this.worldY = gamePanel.tileSize * 21;
-
         this.speed = 4;
         this.direction = "down";
     }
@@ -38,22 +39,35 @@ public class Player extends Entity{
 
         if(!keyIsPressed) return;
         if(keyHandler.downPressed) {
-            this.worldY += this.speed;
             this.direction = "down";
         }
         if(keyHandler.rightPressed) {
-            this.worldX += this.speed;
             this.direction = "right";
         }
         if(keyHandler.leftPressed) {
-            this.worldX -= this.speed;
             this.direction = "left";
         }
         if(keyHandler.upPressed) {
             this.direction = "up";
-            this.worldY -= this.speed;
         }
-
+        collisionOn = false;
+        gamePanel.collisionChecker.checkTile(this);
+        if(!collisionOn) {
+            switch (direction) {
+                case "up":
+                    this.worldY -= this.speed;
+                    break;
+                case "down":
+                    this.worldY += this.speed;
+                    break;
+                case "right":
+                    this.worldX += this.speed;
+                    break;
+                case "left":
+                    this.worldX -= this.speed;
+                    break;
+            }
+        }
         spriteCounter++;
         if(spriteCounter > 10) {
             spriteNumber = spriteNumber == 2 ? 1 : 2;

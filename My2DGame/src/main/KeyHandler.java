@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public class KeyHandler implements KeyListener {
     public boolean upPressed, rightPressed, downPressed, leftPressed;
+    public boolean qPressed, ePressed;
     @Override
     public void keyTyped(KeyEvent e) {}
 
@@ -28,6 +29,12 @@ public class KeyHandler implements KeyListener {
             case KeyEvent.VK_A:
                 leftPressed = true;
                 break;
+            case KeyEvent.VK_Q:
+                qPressed = true;
+                break;
+            case KeyEvent.VK_E:
+                ePressed = true;
+                break;
         }
     }
 
@@ -47,6 +54,12 @@ public class KeyHandler implements KeyListener {
                 break;
             case KeyEvent.VK_A:
                 leftPressed = false;
+                break;
+            case KeyEvent.VK_Q:
+                qPressed = false;
+                break;
+            case KeyEvent.VK_E:
+                ePressed = false;
                 break;
         }
     }
