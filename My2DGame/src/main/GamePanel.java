@@ -1,6 +1,8 @@
 package main;
 
 import entity.Player;
+import objects.OBJ_Key;
+import objects.SuperObject;
 import tile.TileManager;
 
 import javax.swing.*;
@@ -34,7 +36,9 @@ public class GamePanel extends JPanel implements Runnable{
     KeyHandler keyHandler = new KeyHandler();
     TileManager tileManager = new TileManager(this);
     public Player player = new Player(this, keyHandler);
+    public AssetSetter assetSetter = new AssetSetter(this);
     public CollisionChecker collisionChecker = new CollisionChecker(this);
+    public SuperObject[] obj = new SuperObject[10];
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -46,8 +50,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.setLayout(new FlowLayout());
         //allows the panel to be focused so it can receive key input
         this.setFocusable(true);
-    };
 
+    };
+    public void setUpGame() {
+        assetSetter.setObject();
+    }
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -83,8 +90,6 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update() {
         player.update();
-
-
     }
     //built-in method on the JPanel class
     //a class with functions to draw objects on screen
@@ -93,6 +98,10 @@ public class GamePanel extends JPanel implements Runnable{
         //converts Graphics to Graphics2D
         Graphics2D g2 = (Graphics2D) g;
         tileManager.draw(g2);
+        for(SuperObject o : obj) {
+            if(o == null) continue;
+            o.draw(g2, this);
+        }
         player.draw(g2);
         //release resources used by the graphics context
         g2.dispose();

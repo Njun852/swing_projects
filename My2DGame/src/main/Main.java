@@ -20,7 +20,7 @@ public class Main {
         //places the window in the center of screen
         window.setLocationRelativeTo(null);
         window.setVisible(true);
-
+        gamePanel.setUpGame();
         gamePanel.startGameThread();
     }
 }

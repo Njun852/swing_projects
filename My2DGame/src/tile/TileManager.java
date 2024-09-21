@@ -62,7 +62,7 @@ public class TileManager {
                 int screenX = worldX-gamePanel.player.worldX+gamePanel.player.screenX;
                 int screenY = worldY-gamePanel.player.worldY+gamePanel.player.screenY;
                 int tileType = mapTileNum[col][row];
-                if(screenX < -gamePanel.tileSize || screenX > gamePanel.screenWidth+ gamePanel.tileSize) break;
+                if(screenX < -gamePanel.tileSize || screenX > gamePanel.screenWidth+gamePanel.tileSize) break;
                 if(screenY < -gamePanel.tileSize || screenY > gamePanel.screenHeight+gamePanel.tileSize ) continue;
                 g2d.drawImage(tile[tileType].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
             }
