@@ -9,6 +9,8 @@ public class SuperObject {
     public BufferedImage image;
     public String name;
     public boolean collision = false;
+    public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
+    public int solidAreaDefaultX, solidAreaDefaultY = 0;
     public int worldX, worldY;
 
     public void draw(Graphics2D g2d, GamePanel gp) {

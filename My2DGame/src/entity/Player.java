@@ -14,6 +14,7 @@ public class Player extends Entity{
     KeyHandler keyHandler;
     public final int screenX;
     public final int screenY;
+    int heldKeys = 0;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
@@ -21,6 +22,8 @@ public class Player extends Entity{
         screenX = gamePanel.screenWidth/2-(gamePanel.tileSize/2);
         screenY = gamePanel.screenHeight/2-(gamePanel.tileSize/2);
         solidArea = new Rectangle(8, 16, 32, 32);
+        solidAreaDefaultX = solidArea.x;
+        solidAreaDefaultY = solidArea.y;
         setDefaultValues();
         getPlayerImage();
     }
@@ -52,6 +55,8 @@ public class Player extends Entity{
         }
         collisionOn = false;
         gamePanel.collisionChecker.checkTile(this);
+        int objIndex = gamePanel.collisionChecker.checkObject(this, true);
+        pickUpObject(objIndex);
         if(!collisionOn) {
             switch (direction) {
                 case "up":
@@ -74,7 +79,20 @@ public class Player extends Entity{
             spriteCounter = 0;
         }
     }
+    public void pickUpObject(int index) {
+        if(index == 999) return;
 
+        switch (gamePanel.obj[index].name) {
+            case "Key":
+                heldKeys++;
+                break;
+            case "Door":
+                if(heldKeys <= 0) return;
+                heldKeys--;
+                break;
+        }
+        gamePanel.obj[index] = null;
+    }
     public void getPlayerImage() {
         try {
             up1 = ImageIO.read(getClass().getResourceAsStream("/player/boy_up_1.png"));
